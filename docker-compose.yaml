@@ -9,3 +9,14 @@ services:
       - "5001:5001"
     restart: unless-stopped
     command: python3 app.py
+
+  qdrant:
+    image: qdrant/qdrant
+    container_name: qdrant
+    ports:
+      - "6333:6333"  # Map port 6333 for API access
+    volumes:
+      - qdrant_storage:/qdrant/storage  # Persistent storage for Qdrant data
+
+volumes:
+  qdrant_storage:
