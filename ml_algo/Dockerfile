@@ -7,16 +7,19 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y \
         git \
-        python3-pip
+        python3-pip \
+        libglib2.0-0
 
-RUN git submodule update --init --recursive
+
+
 # Install any python packages you need
 COPY requirements.txt requirements.txt
 
+RUN python3 -m pip install --upgrade pip
+
 RUN python3 -m pip install -r requirements.txt
 
-# Upgrade pip
-RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade opencv-python
 
 # Set the working directory
 WORKDIR /app

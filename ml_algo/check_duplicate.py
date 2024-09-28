@@ -9,7 +9,7 @@ from model.visil import ViSiL
 from ml_algo import get_res_by_uuid
 from ml_algo import device
 from vector_db_interface import VectorDatabase
-from utils import download_video
+from algo_utils import download_video
 
 if not "full_index2.pkl" in os.listdir():
     gdown.download(url="https://drive.google.com/uc?id=1iRJNmlb7SlWwc8iiurQ6cudjaP8kBaxz")
