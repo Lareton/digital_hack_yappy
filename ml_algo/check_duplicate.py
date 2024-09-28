@@ -23,12 +23,3 @@ df = df.sort_values(by="created").reset_index(drop=True)
 
 # подгружаем индексированные видео
 vector_db = VectorDatabase("full_index2.pkl")
-
-
-def check_video_is_duplicate_by_uuid(uuid_video):
-    video_link = f"https://s3.ritm.media/yappy-db-duplicates/{uuid_video}.mp4"
-    download_video(video_link, f"{uuid_video}.mp4")
-    pred_is_dup, pred_uuid = get_res_by_uuid(df, vector_db, model, uuid_video, 0.3)
-    return pred_is_dup, pred_uuid
-
-
