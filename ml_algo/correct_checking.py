@@ -16,6 +16,9 @@ from vector_db_interface import VectorDatabase
 if not "full_index2.pkl" in os.listdir():
     gdown.download(url="https://drive.google.com/uc?id=1iRJNmlb7SlWwc8iiurQ6cudjaP8kBaxz")
 
+if not "full_index2.pkl" not in os.listdir():
+    gdown.download("https://drive.usercontent.google.com/uc?id=1iRJNmlb7SlWwc8iiurQ6cudjaP8kBaxz")
+
 # инициализируем модель
 model = ViSiL(pretrained=True).to(device)
 model.eval()
