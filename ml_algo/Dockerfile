@@ -7,8 +7,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y \
         git \
-        python3-pip \
-        libglib2.0-0
+        python3-pip
+
+RUN apt-get install -y python3 python3-pip libgl1-mesa-glx
 
 
 
