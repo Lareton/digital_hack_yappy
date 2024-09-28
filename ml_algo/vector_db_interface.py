@@ -2,6 +2,82 @@ import pickle
 from sklearn.neighbors import KDTree
 import numpy as np
 
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+import numpy as np
+
+
+class VectorDatabaseQdrant:
+    """
+    Класс для управления векторной базой данных и поиска ближайших соседей с использованием Qdrant.
+
+    Этот класс взаимодействует с векторной базой данных Qdrant для хранения и поиска ближайших соседей
+    по евклидовой или косинусной метрике.
+    """
+
+    def __init__(self, host: str, port: int, collection_name: str, metric: str = 'cosine'):
+        """
+        Инициализирует объект класса `VectorDatabaseQdrant` и подключается к базе данных Qdrant.
+
+        Параметры:
+        ----------
+        host : str
+            Адрес сервера Qdrant (например, "localhost").
+        port : int
+            Порт, на котором работает Qdrant (например, 6333).
+        collection_name : str
+            Имя коллекции в Qdrant, которая будет использоваться для поиска.
+        metric : str, по умолчанию "cosine"
+            Метрика для поиска (может быть "cosine" или "euclidean").
+
+        """
+        # Инициализация клиента Qdrant
+        self.client = QdrantClient(host=host, port=port)
+        self.collection_name = collection_name
+        self.metric = metric
+
+        # Проверка наличия коллекции
+        if not self.client.get_collection(self.collection_name):
+            raise ValueError(f"Коллекция {self.collection_name} не найдена в Qdrant.")
+
+    def query(self, emb: np.ndarray, k: int = 5) -> list:
+        """
+        Выполняет поиск ближайших соседей для заданного вектора признаков.
+
+        Параметры:
+        ----------
+        emb : np.ndarray
+            Вектор признаков, по которому выполняется поиск ближайших соседей.
+        k : int, по умолчанию 5
+            Количество ближайших соседей, которые нужно найти.
+
+        Возвращает:
+        ----------
+        list : List[dict]
+            Список ближайших соседей с информацией о точках (id и расстояние).
+
+        Пример использования:
+        ---------------------
+        >>> qdrant_db = VectorDatabaseQdrant("localhost", 6333, "video_embeddings")
+        >>> query_emb = np.array([0.1, 0.2, 0.3, 0.4])
+        >>> qdrant_db.query(query_emb, k=3)
+        [{'id': 1, 'distance': 0.12}, {'id': 2, 'distance': 0.15}, ...]
+        """
+        # Преобразование вектора признаков в список
+        emb = emb.tolist()
+
+        # Выполнение поиска ближайших соседей в Qdrant
+        search_result = self.client.search(
+            collection_name=self.collection_name,
+            query_vector=emb,
+            limit=k,
+            with_payload=False
+        )
+
+        # Формирование списка ближайших соседей
+        return [{'id': result.id, 'distance': result.score} for result in search_result]
+
+
 class VectorDatabase:
     """
     Класс для управления векторной базой данных и поиска ближайших соседей с использованием KDTree.
@@ -22,13 +98,6 @@ class VectorDatabase:
     tree : KDTree
         Структура данных KDTree для быстрого поиска ближайших соседей по евклидовой метрике.
 
-    Методы:
-    -------
-    __init__(self, path_to_index)
-        Инициализирует объект `VectorDatabase` и загружает векторный индекс из файла.
-
-    query(self, emb, k=5)
-        Выполняет поиск ближайших соседей для заданного вектора признаков и возвращает список индексов и соответствующих векторов.
     """
 
     def __init__(self, path_to_index: str):
@@ -75,13 +144,6 @@ class VectorDatabase:
             - индекс: идентификатор ближайшего соседа в базе данных.
             - вектор: соответствующий вектор признаков из базы данных.
 
-        Описание работы:
-        ----------------
-        1. Преобразует входной вектор признаков `emb` в одномерный массив.
-        2. Выполняет поиск ближайших соседей с помощью KDTree.
-        3. Извлекает идентификаторы и векторы ближайших соседей.
-        4. Возвращает список ближайших соседей в виде кортежей (индекс, вектор).
-
         Пример использования:
         ---------------------
         >>> db = VectorDatabase("full_index2.pkl")
@@ -101,3 +163,4 @@ class VectorDatabase:
 
         # Возвращение списка кортежей (индекс, вектор)
         return list(zip(inds, best_embs))
+
