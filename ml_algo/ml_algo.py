@@ -9,8 +9,8 @@ import os
 
 device = torch.device('cuda')
 
-# sys.path.append('visil_pytorch/')
-from visil_pytorch.utils import load_video
+sys.path.append('visil_pytorch/')
+from utils import load_video
 
 
 def get_emb_for_video(model, video_frames):
