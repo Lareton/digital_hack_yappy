@@ -11,7 +11,8 @@ RUN apt-get update && \
 
 RUN apt-get install -y python3 python3-pip libgl1-mesa-glx
 
-
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip libglib2.0-0 libgl1-mesa-glx
 
 # Install any python packages you need
 COPY requirements.txt requirements.txt
