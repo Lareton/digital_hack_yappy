@@ -30,7 +30,6 @@ def get_res_by_uuid(df, vector_db, model, uuid, threshold):
     else:
         index_after_skip = index_after_skip[0]
 
-    # TODO скачивать видос
     path = f"{uuid}.mp4"
     video_frames = load_video(path)
     embedding = get_emb_for_video(model, video_frames)
