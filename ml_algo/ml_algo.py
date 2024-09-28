@@ -10,8 +10,7 @@ import os
 device = torch.device('cuda')
 
 sys.path.append('visil_pytorch/')
-from utils import load_video
-
+from visil_pytorch.utils import load_video
 
 def get_emb_for_video(model, video_frames):
     video_frames = torch.from_numpy(video_frames)
@@ -26,11 +25,10 @@ def get_res_by_uuid(df, vector_db, model, uuid, threshold):
     # определяем
     index_after_skip = df[df["uuid"] == uuid].index
     if len(index_after_skip) == 0:
-        index_after_skip = np.inf()
+        index_after_skip = np.inf
     else:
         index_after_skip = index_after_skip[0]
 
-    # TODO скачивать видос
     path = f"{uuid}.mp4"
     video_frames = load_video(path)
     embedding = get_emb_for_video(model, video_frames)
