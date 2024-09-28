@@ -1,10 +1,7 @@
 import os
-
-import pandas as pd
-from tqdm import tqdm
-import numpy as np
 import sys
 import gdown
+import pandas as pd
 
 sys.path.append('visil_pytorch/')
 from model.visil import ViSiL
@@ -27,24 +24,8 @@ df = df.sort_values(by="created").reset_index(drop=True)
 vector_db = VectorDatabase("full_index2.pkl")
 
 
-results = []
-for ind, i in tqdm(df.iterrows()):
-    # print(i["uuid"], i["is_duplicate"], i["duplicate_for"])
-    # if not  i["is_duplicate"]:
-    # continue
-
+def check_video_is_duplicate_by_uuid():
     pred_is_dup, pred_uuid = get_res_by_uuid(df, vector_db, model, i["uuid"], 0.3)
-
-    print(pred_is_dup, i["is_duplicate"], (pred_is_dup and pred_uuid == i["duplicate_for"]))
-
-    if pred_is_dup == i["is_duplicate"]:
-        if pred_is_dup:
-            results.append(int((pred_is_dup and pred_uuid == i["duplicate_for"])))
-        else:
-            results.append(1)
-    else:
-        results.append(0)
-
-    print(np.mean(results))
+    return pred_is_dup, pred_uuid
 
 
