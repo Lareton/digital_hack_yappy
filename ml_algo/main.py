@@ -61,6 +61,7 @@ def on_request(ch, method, props, body):
     uuid_video = json.loads(body)["uuid_video"]
     print(f" [.] {uuid_video}")
 
+    is_duplicate, duplicated_for = check_video_is_duplicate_by_uuid(uuid_video)
 
     # Отправляем ответ обратно клиенту
     ch.basic_publish(
