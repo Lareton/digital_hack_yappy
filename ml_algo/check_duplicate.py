@@ -13,8 +13,10 @@ from ml_algo import device
 from vector_db_interface import VectorDatabase
 from algo_utils import download_video
 
+index_name = "bd_index.pkl"
+
 # Проверка наличия файла индекса "full_index2.pkl", если отсутствует - скачиваем его
-if not "full_index2.pkl" in os.listdir():
+if not index_name in os.listdir():
     # gdown.download(url="https://drive.google.com/uc?id=1iRJNmlb7SlWwc8iiurQ6cudjaP8kBaxz")
     gdown.download(url="https://drive.google.com/uc?id=1q4NOo3ZwcBWt1-OMZ5oh2HCfaL9WJbo4")
 
@@ -28,4 +30,4 @@ df["created"] = pd.to_datetime(df["created"])
 df = df.sort_values(by="created").reset_index(drop=True)
 
 # Инициализация базы данных векторов
-vector_db = VectorDatabase("full_index2.pkl")
+vector_db = VectorDatabase(index_name)
