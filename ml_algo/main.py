@@ -8,6 +8,8 @@ RABBITMQ_HOST = 'rabbitmq'
 RABBITMQ_USER = 'user'
 RABBITMQ_PASS = 'password'
 
+THRESHOLD = 0.40234095430374145
+
 
 def check_video_is_duplicate_by_uuid(uuid_video: str) -> tuple:
     """
@@ -38,7 +40,7 @@ def check_video_is_duplicate_by_uuid(uuid_video: str) -> tuple:
     download_video(video_link, f"{uuid_video}.mp4")
 
     # Выполняем проверку на дублирование
-    pred_is_dup, pred_uuid = get_res_by_uuid(df, vector_db, model, uuid_video, 0.3)
+    pred_is_dup, pred_uuid = get_res_by_uuid(df, vector_db, model, uuid_video, THRESHOLD)
 
     return pred_is_dup, pred_uuid
 
@@ -59,7 +61,6 @@ def on_request(ch, method, props, body):
     uuid_video = json.loads(body)["uuid_video"]
     print(f" [.] {uuid_video}")
 
-    is_duplicate, duplicated_for = check_video_is_duplicate_by_uuid(uuid_video)
 
     # Отправляем ответ обратно клиенту
     ch.basic_publish(
