@@ -14,23 +14,19 @@ from ml_algo import device
 # from vector_db_interface import VectorDatabase
 from algo_utils import download_video
 
-index_name = "bd_index.pkl"
-
 # Проверка наличия файла индекса "full_index2.pkl", если отсутствует - скачиваем его
-if not index_name in os.listdir():
-    # gdown.download(url="https://drive.google.com/uc?id=1iRJNmlb7SlWwc8iiurQ6cudjaP8kBaxz")
-    # gdown.download(url="https://drive.google.com/uc?id=1q4NOo3ZwcBWt1-OMZ5oh2HCfaL9WJbo4")
-    gdown.download(url="https://drive.google.com/uc?id=1arTwiSyTENUbLZmj1f-NBddQUBt8RriH")
+if not "full_index2.pkl" in os.listdir():
+    gdown.download(url="https://drive.google.com/uc?id=1iRJNmlb7SlWwc8iiurQ6cudjaP8kBaxz")
 
 # Инициализация модели ViSiL с предварительно обученными весами
 model_path = 'model_finetuned.pt'
 if not model_path in os.listdir():
     gdown.download(url="https://drive.google.com/uc?id=1xVT3EPK7wacnwYeE4PAObM5K_XDu-B1D")
     model = ViSiL(pretrained=False).to(device)
-    model.load_state_dict(torch.load(model_path))
+    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu'))
 else:
     model = ViSiL(pretrained=False).to(device)
-    model.load_state_dict(torch.load(model_path))
+    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
 model.eval()
 
 # Загрузка и предварительная обработка данных из CSV файла
@@ -39,4 +35,4 @@ df["created"] = pd.to_datetime(df["created"])
 df = df.sort_values(by="created").reset_index(drop=True)
 
 # Инициализация базы данных векторов
-vector_db = VectorDatabase(index_name)
+vector_db = VectorDatabase("full_index2.pkl")
