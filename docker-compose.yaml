@@ -25,10 +25,14 @@ services:
     container_name: api
     ports:
       - "8000:8000"
+    depends_on:
+      - rabbitmq
 
   ml:
     build: ml_algo
     container_name: ml_algo
+    depends_on:
+      - rabbitmq
 
 volumes:
   qdrant_storage:
