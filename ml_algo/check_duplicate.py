@@ -35,7 +35,7 @@ else:
 model.eval()
 
 # Загрузка и предварительная обработка данных из CSV файла
-df = pd.read_csv("cp_vseros_train_1000.csv", index_col=0)
+df = pd.read_csv("cp_vseros_train_1000.csv")
 df["created"] = pd.to_datetime(df["created"])
 df = df.sort_values(by="created").reset_index(drop=True)
 
