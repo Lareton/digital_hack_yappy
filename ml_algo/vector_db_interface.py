@@ -2,8 +2,8 @@ import pickle
 from sklearn.neighbors import KDTree
 import numpy as np
 
-#from qdrant_client import QdrantClient
-#from qdrant_client.http import models
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
 import numpy as np
 
 

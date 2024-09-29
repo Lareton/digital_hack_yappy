@@ -27,10 +27,6 @@
 - RabbitMQ является мощной и надежной системой обмена сообщениями. Она обеспечивает асинхронную коммуникацию между
   сервисами, что важно для построения отказоустойчивых и масштабируемых микросервисных архитектур.
 
-### PostgreSQL
-
-- PostgreSQL является одной из самых мощных и надежных реляционных баз данных с открытым исходным кодом.
-
 ### Qrand
 
 - Qrand современная векторная база данных, помогающая хранить и поддерживать огромное количество размеченных видео
@@ -62,30 +58,24 @@
 1. Клонируйте репозиторий:
 
 ```shell
-git clone git@github.com:ShadowP1e/lct-hackathon.git
+git clone https://github.com/Lareton/digital_hack_yappy.git
 ```
 
-2. Перейдите в папку проекта
+2. Склонировать подмодуль
 
 ```shell
-cd lct-hackathon
-```
-
-3. Переименуйте файл .env.sample в .env
-
-```shell
-mv .env.sample .env
+git clone -b pytorch https://github.com/MKLab-ITI/visil ml_algo/visil_pytorch
 ```
 
 4. Запустите сервисы:
 
 ```shell
-docker compose up --build
+docker compose up --build -d
 ```
 
-## Swager
+## Swagger
 
-#### Swager API лежит по [этой](http://localhost:5000/docs) ссылке после развертывания приложения 
+#### Swagger API лежит по [этой](http://188.124.36.137:8000/docs) ссылке после развертывания приложения 
 
 ## Команда
 

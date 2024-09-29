@@ -8,3 +8,4 @@ opencv-python>=3.1
 scikit-learn
 wget
 pika
+qdrant_client

@@ -11,14 +11,14 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: user   # Default RabbitMQ username
       RABBITMQ_DEFAULT_PASS: password  # Default RabbitMQ password
-  #
-  #  qdrant:
-  #    image: qdrant/qdrant
-  #    container_name: qdrant
-  #    ports:
-  #      - "6333:6333"  # Map port 6333 for API access
-  #    volumes:
-  #      - qdrant_storage:/qdrant/storage  # Persistent storage for Qdrant data
+
+  qdrant:
+    image: qdrant/qdrant
+    container_name: qdrant
+    ports:
+      - "6333:6333"  # Map port 6333 for API access
+    volumes:
+      - qdrant_storage:/qdrant/storage  # Persistent storage for Qdrant data
 
   api:
     build: api
