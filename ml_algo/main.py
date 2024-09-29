@@ -1,6 +1,6 @@
-# from algo_utils import download_video
-# from ml_algo import get_res_by_uuid
-# from check_duplicate import model, df, vector_db
+from algo_utils import download_video
+from ml_algo import get_res_by_uuid
+from check_duplicate import model, df, vector_db
 import pika
 import json
 
