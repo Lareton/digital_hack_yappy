@@ -23,7 +23,7 @@ model_path = 'model_finetuned.pt'
 if not model_path in os.listdir():
     gdown.download(url="https://drive.google.com/uc?id=1xVT3EPK7wacnwYeE4PAObM5K_XDu-B1D")
     model = ViSiL(pretrained=False).to(device)
-    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu'))
+    model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
 else:
     model = ViSiL(pretrained=False).to(device)
     model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
