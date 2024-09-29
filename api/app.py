@@ -8,7 +8,7 @@ import uuid
 
 app = FastAPI()
 
-RABBITMQ_HOST = 'localhost'
+RABBITMQ_HOST = 'rabbitmq'
 RABBITMQ_USER = 'user'
 RABBITMQ_PASS = 'password'
 
