@@ -17,9 +17,12 @@ services:
   #      - "6333:6333"  # Map port 6333 for API access
   #    volumes:
   #      - qdrant_storage:/qdrant/storage  # Persistent storage for Qdrant data
-  ml:
-    build: ml_algo
-    container_name: ml_algo
+
+  api:
+    build: api
+    container_name: api
+    ports:
+      - "8000:8000"
 
 volumes:
   qdrant_storage:
