@@ -18,7 +18,8 @@ index_name = "bd_index.pkl"
 # Проверка наличия файла индекса "full_index2.pkl", если отсутствует - скачиваем его
 if not index_name in os.listdir():
     # gdown.download(url="https://drive.google.com/uc?id=1iRJNmlb7SlWwc8iiurQ6cudjaP8kBaxz")
-    gdown.download(url="https://drive.google.com/uc?id=1q4NOo3ZwcBWt1-OMZ5oh2HCfaL9WJbo4")
+    # gdown.download(url="https://drive.google.com/uc?id=1q4NOo3ZwcBWt1-OMZ5oh2HCfaL9WJbo4")
+    gdown.download(url="https://drive.google.com/uc?id=1arTwiSyTENUbLZmj1f-NBddQUBt8RriH")
 
 # Инициализация модели ViSiL с предварительно обученными весами
 model = ViSiL(pretrained=True).to(device)
