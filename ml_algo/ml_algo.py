@@ -7,7 +7,7 @@ import os
 import pandas as pd
 
 # Устройство для выполнения вычислений (используется GPU, если доступен)
-device = torch.device('cuda')
+device = torch.device('cpu')
 
 # Добавляем путь к пользовательским модулям
 sys.path.append('visil_pytorch/')

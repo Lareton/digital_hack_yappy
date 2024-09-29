@@ -1,6 +1,12 @@
-from algo_utils import download_video
-from ml_algo import get_res_by_uuid
-from check_duplicate import model, df, vector_db
+# from algo_utils import download_video
+# from ml_algo import get_res_by_uuid
+# from check_duplicate import model, df, vector_db
+import pika
+import json
+
+RABBITMQ_HOST = 'localhost'
+RABBITMQ_USER = 'user'
+RABBITMQ_PASS = 'password'
 
 
 def check_video_is_duplicate_by_uuid(uuid_video: str) -> tuple:
@@ -37,6 +43,39 @@ def check_video_is_duplicate_by_uuid(uuid_video: str) -> tuple:
     return pred_is_dup, pred_uuid
 
 
+# Подключаемся к RabbitMQ
+credentials = pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASS)
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(host=RABBITMQ_HOST, credentials=credentials)
+)
+channel = connection.channel()
 
-if __name__ == '__main__':
-    print(check_video_is_duplicate_by_uuid("6d3233b6-f8de-49ba-8697-bb30dbf825f7"))
+# Объявляем очередь для RPC
+channel.queue_declare(queue='rpc_queue')
+
+
+# Определяем функцию обратного вызова для обработки запросов
+def on_request(ch, method, props, body):
+    uuid_video = json.loads(body)["uuid_video"]
+    print(f" [.] {uuid_video}")
+
+    is_duplicate, duplicated_for = check_video_is_duplicate_by_uuid(uuid_video)
+
+    # Отправляем ответ обратно клиенту
+    ch.basic_publish(
+        exchange='',
+        routing_key=props.reply_to,
+        properties=pika.BasicProperties(correlation_id=props.correlation_id),
+        body=json.dumps({"is_duplicate": is_duplicate, "duplicate_for": duplicated_for})
+    )
+
+    # Подтверждаем обработку сообщения
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+
+# Настраиваем очередь на получение сообщений
+channel.basic_qos(prefetch_count=1)
+channel.basic_consume(queue='rpc_queue', on_message_callback=on_request)
+
+print(" [x] Awaiting RPC requests")
+channel.start_consuming()

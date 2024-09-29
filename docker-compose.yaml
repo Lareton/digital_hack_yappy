@@ -2,13 +2,15 @@ version: '3.9'
 
 
 services:
-  #  flask_web:
-  #    container_name: flask_web_container
-  #    build: ./frontend
-  #    ports:
-  #      - "5001:5001"
-  #    restart: unless-stopped
-  #    command: python3 app.py
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"    # RabbitMQ default communication port
+      - "15672:15672"  # RabbitMQ management console port
+    environment:
+      RABBITMQ_DEFAULT_USER: user   # Default RabbitMQ username
+      RABBITMQ_DEFAULT_PASS: password  # Default RabbitMQ password
   #
   #  qdrant:
   #    image: qdrant/qdrant
@@ -23,6 +25,10 @@ services:
     container_name: api
     ports:
       - "8000:8000"
+
+  ml:
+    build: ml_algo
+    container_name: ml_algo
 
 volumes:
   qdrant_storage:
