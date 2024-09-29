@@ -11,7 +11,7 @@ sys.path.append('visil_pytorch/')
 from model.visil import ViSiL
 from ml_algo import get_res_by_uuid
 from ml_algo import device
-# from vector_db_interface import VectorDatabase
+from vector_db_interface import VectorDatabase
 from algo_utils import download_video
 
 # Проверка наличия файла индекса "full_index2.pkl", если отсутствует - скачиваем его
