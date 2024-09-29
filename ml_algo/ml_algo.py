@@ -100,7 +100,7 @@ def get_res_by_uuid(df: pd.DataFrame, vector_db, model, uuid: str, threshold: fl
     embedding = embedding.cpu().numpy()
 
     # Поиск ближайших соседей с помощью векторной базы данных
-    nearest_indexes = vector_db.query(embedding, k=30)
+    nearest_indexes = vector_db.query(embedding, k=15)
 
     # Фильтрация соседей, чтобы учитывать только те, чьи индексы меньше текущего
     nearest_indexes = [i for i in nearest_indexes if i[0] < index_after_skip]
