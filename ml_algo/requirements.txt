@@ -7,3 +7,4 @@ tqdm>=4.2
 opencv-python>=3.1
 scikit-learn
 wget
+pika
